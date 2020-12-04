@@ -43,7 +43,6 @@ router.post('/', function (req, res, next) {
                 .input('password', sql.VarChar, password)
                 .query(query);
             res.redirect('/login');
-            res.post()
         } catch (err) {
             console.dir(err);
             res.render('message', {
