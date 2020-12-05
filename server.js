@@ -1,6 +1,8 @@
 const express = require('express');
 const hbs = require('./utils/express-handlebars');
 const session = require('express-session');
+const redis = require('redis');
+const connectRedis = require('connect-redis');
 
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
@@ -28,27 +30,35 @@ const app = express();
 
 // This DB Config is accessible globally
 dbConfig = {
-  user: process.env.username,
-  password: process.env.password,
-  server: process.env.host,
-  database: process.env.database,
-  options: {
-    'encrypt': true,
-  }
+    user: process.env.username,
+    password: process.env.password,
+    server: process.env.host,
+    database: process.env.database,
+    options: {
+        'encrypt': true,
+    }
 };
 
-// Setting up the session.
-// This uses MemoryStorage which is not
-// recommended for production use.
+const redisStore = connectRedis(session);
+const redisClient = redis.createClient();
+
+redisClient.on('error', function (err) {
+    console.log('Could not connect to Redis.' + err);
+});
+
+redisClient.on('connect', function () {
+    console.log('Connect to Redis succesfully.');
+});
 app.use(session({
-  secret: 'COSC 304 Rules!',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: false,
-    secure: false,
-    maxAge: 60000,
-  }
+    store: new redisStore({client: redisClient}),
+    secret: 'COSC 304 Rules!',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: false,
+        secure: false,
+        maxAge: 60000,
+    }
 }));
 
 // Setting up the rendering engine
@@ -85,9 +95,9 @@ app.use(express.static('public/'));
 
 // Rendering the main page
 app.get('/', function (req, res) {
-  res.render('index', {
-    title: "Electric Lettuce"
-  });
+    res.render('index', {
+        title: "Electric Lettuce"
+    });
 });
 
 // Starting our Express app
