@@ -1,8 +1,10 @@
 const express = require('express');
 const hbs = require('./utils/express-handlebars');
 const session = require('express-session');
-const MSSQLStore = require('connect-mssql-v2');
+const redis = require('redis');
 
+let RedisStore = require('connect-redis')(session)
+let redisClient = redis.createClient()
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
 let listProd = require('./routes/listprod');
@@ -42,8 +44,9 @@ const dbConfig = {
 // This uses MemoryStorage which is not
 // recommended for production use.
 app.use(session({
-  store: new MSSQLStore(dbConfig),
-  secret: 'session-secret'
+  store: new RedisStore({client: redisClient}),
+  secret: 'session-secret',
+  resave: false,
   })
 );
 
