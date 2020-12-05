@@ -27,9 +27,13 @@ const app = express();
 
 // This DB Config is accessible globally
 dbConfig = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
+  user: process.env.username,
+  password: process.env.password,
+  server: process.env.host,
+  database: process.env.database,
+  options: {
+    'enableArithAbort': true,
+    'encrypt': false,
   }
 };
 
