@@ -32,7 +32,7 @@ const dbConfig = {
   password: process.env.password,
   server: process.env.host,
   database: process.env.database,
-
+  
   options: {
     'encrypt': true,
   }
@@ -42,7 +42,7 @@ const dbConfig = {
 // This uses MemoryStorage which is not
 // recommended for production use.
 app.use(session({
-  store: new MSSQLStore(dbConfig),
+  store: new MSSQLStore(dbConfig, options),
   secret: 'session-secret'
   })
 );
