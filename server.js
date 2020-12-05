@@ -40,7 +40,7 @@ dbConfig = {
 };
 
 const redisStore = connectRedis(session);
-const redisClient = redis.createClient();
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 redisClient.on('error', function (err) {
     console.log('Could not connect to Redis.' + err);
