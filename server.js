@@ -27,11 +27,12 @@ let register = require('./routes/register');
 const app = express();
 
 // This DB Config is accessible globally
-dbConfig = {
+const dbConfig = {
   user: process.env.username,
   password: process.env.password,
   server: process.env.host,
   database: process.env.database,
+  
   options: {
     'encrypt': true,
   }
