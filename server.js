@@ -27,13 +27,9 @@ const app = express();
 
 // This DB Config is accessible globally
 dbConfig = {
-  user: 'SA',
-  password: 'YourStrong@Passw0rd',
-  server: 'db',
-  database: 'tempdb',
-  options: {
-    'enableArithAbort': true,
-    'encrypt': false,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
   }
 };
 
