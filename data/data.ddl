@@ -11,7 +11,13 @@ DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS ordersummary;
 DROP TABLE IF EXISTS paymentmethod;
 DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS session;
 
+CREATE TABLE session(
+    sid                 VARCHAR(255) NOT NULL,
+    session             VARCHAR(MAX) NOT NULL,
+    expires             DATETIME     NOT NULL
+);
 
 CREATE TABLE customer (
     customerId          INT IDENTITY,

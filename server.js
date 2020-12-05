@@ -1,6 +1,7 @@
 const express = require('express');
 const hbs = require('./utils/express-handlebars');
 const session = require('express-session');
+const MSSQLStore = require('connect-mssql-v2');
 
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
@@ -40,15 +41,10 @@ dbConfig = {
 // This uses MemoryStorage which is not
 // recommended for production use.
 app.use(session({
-  secret: 'COSC 304 Rules!',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: false,
-    secure: false,
-    maxAge: 60000,
-  }
-}));
+  store: new MSSQLStore(dbConfig, options),
+  secret: 'session-secret'
+  })
+);
 
 // Setting up the rendering engine
 app.engine('handlebars', hbs.engine);
