@@ -32,8 +32,7 @@ dbConfig = {
   server: process.env.host,
   database: process.env.database,
   options: {
-    'enableArithAbort': true,
-    'encrypt': false,
+    'encrypt': true,
   }
 };
 
